@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    User Dashboard
+{% endblock %}
+
+
+{% block name %} {{ user.name }}{% endblock %}
+
+{% block img %}
+
+{% if user.picture %}
+<img src="{{ user.picture }}" height="50px" width="50px">
+{% else %}
+<img src="{% static 'Assets/user.png' %}" height="50px" width="50px">
+{% endif %}
+
+{% endblock %}
+
+
+{% block body %}
+
+
+    <div class="container-fluid p-2 table-responsive" style="max-height:300px;" >
+         {% if user.balance != 0 %}
+             <div class="container ">
+    <form class="row" action="{% url 'withdraw_payment' %}" method="post">
+        {%  csrf_token %}
+    <div class="col-lg-6"><input class="form-control" value="{{ user.balance }}" readonly></div>
+
+    <div class="col">  <input type="submit" class="btn btn-outline-success" value="Request for approval"></div>
+    </form>
+</div>
+        {% endif %}
+        <br>
+        {% if msg %}
+                <div class="text-center">
+                    <h6 class="text-success">{{ msg}}</h6>
+                </div>
+        {% else %}
+
+        {% endif %}
+        <br>
+        <table class="table table-fluid table-hover   table-striped" id="myTable">
+
+        <thead>
+
+        <tr class="text-center">
+             {% if payments %}
+            <th class="border">Payment</th>
+            <th class="border">Status</th>
+            <th class="border">Date and Time</th>
+
+            {% else %}
+
+            {% endif %}
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in payments %}
+
+                <tr>
+                    <td class="border">{{ p.payment }}</td>
+                    <td class="border">{{ p.payment_status }}</td>
+                    <td class="border">{{ p.date }}</td>
+
+                </tr>
+
+        {% empty %}
+        <tr class="text-center">
+                <td><p>No Payments Received yet!</p></td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

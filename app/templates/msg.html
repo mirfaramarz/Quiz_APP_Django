@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{%  load static %}
+
+
+<!--################-->
+
+{% block title %}
+    User Dashboard
+{% endblock %}
+
+
+<!--################-->
+
+{% block name %} {{ user.name }}{% endblock %}
+
+
+<!--################-->
+
+{% block img %}
+
+
+{% if user.picture %}
+        <img src="{{ user.picture }}" height="50px" width="50px">
+{% else %}
+        <img src="{% static 'Assets/user.png' %}" height="50px" width="50px">
+{% endif %}
+
+
+{% endblock %}
+
+
+
+
+{% block body %}
+
+ <div class="container-fluid p-3 text-center bg-white">
+     {% if alert %}
+            <h3 class="text-danger">{{ msg }}</h3>
+            <a class="text-danger py-2" href="{% url 'user_dashboard' %}">Click here to try again!</a>
+     {% else %}
+            <h3 class="text-success">{{ msg }}</h3>
+            <a class="text-success   py-2" href="{% url 'user_dashboard' %}">Click here to try again!</a>
+     {% endif %}
+
+</div>
+
+
+
+
+{% endblock %}

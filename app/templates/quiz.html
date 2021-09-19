@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    User Dashboard
+{% endblock %}
+
+
+
+{% block name %} {{ user.name }}{% endblock %}
+
+{% block img %}
+
+{% if user.picture %}
+<img src="{{ user.picture }}" height="50px" width="50px">
+{% else %}
+<img src="{% static 'Assets/user.png' %}" height="50px" width="50px">
+{% endif %}
+
+{% endblock %}
+
+
+{% block body %}
+
+
+<div class="container-fluid p-1" onmousedown="return false" onselectstart="return false">
+
+<div class="form-group bg-white border p-1">
+
+    <div class="col text-center">
+        <div class="row justify-content-between ">
+            <div class="h5 col-lg-4 col-md-6 col-sm-12 myfont text-success">
+                Question No: {{ request.session.ques_no }}</div>
+
+            <div class="h5 col-lg-4 col-md-6 col-sm-12 myfont text-success">
+                Time left: <span id="timer"></span></div>
+        </div>
+        <div class="h5 col myfont">
+            {% if request.session.attempt == 1 %}
+                 <span class="text-danger">Allowed Wrong Attempt only: {{ request.session.attempt }}</span> </div>
+            {% else %}
+                <span class=" text-success">Allowed Wrong Attempt only: {{ request.session.attempt }}</span> </div>
+            {% endif %}
+        <hr>
+    </div>
+    <form action="{% url 'check_ans' questions.id  %}" method="post" class="myfont" style="text-transform: capitalize;">
+                {% csrf_token %}
+                    <ul>
+                        {% if ans %}
+                        <li>
+                            <h5>Previous Question Result:
+
+                                <span class="h6 "> {{ ans_y }} </span></h5>
+
+                                    Answer was: {{ ans.ans_key }}
+                            <hr>
+                        </li>
+                        {% endif %}
+
+                    <li class="py-1 h4 col" >
+                            <label>{{ questions.question }}</label>
+
+                                            {% if questions.picture %}
+                                                     <img src="{{ questions.picture.url }}" width="90%" height="120px">
+                                            {% endif %}<br>
+
+                             <input type="radio" name="option" value="{{ questions.option_a }}" required>
+                                        <label class="px-1">{{ questions.option_a }}</label><br>
+
+
+                             <input type="radio" name="option" value="{{ questions.option_b }}" >
+                                            <label  class="px-1">{{ questions.option_b }}</label><br>
+
+
+                             <input type="radio" name="option" value="{{ questions.option_c }}" >
+                                        <label  class="px-1">{{ questions.option_c }}</label><br>
+
+
+                             <input type="radio" name="option" value="{{ questions.option_d }}" >
+                                            <label class="px-1">{{ questions.option_d }}</label><br><br>
+
+                            <input type="radio" name="option" value="True"  hidden >
+
+
+                    </li>
+
+                    </ul>
+                <br>
+                <div class="col text-center">
+                <input type="submit" class="btn btn-success btn-md float-center" value="Submit">
+                </div>
+            </form>
+
+</div>
+</div>
+
+
+
+
+<style>
+.myfont{
+ font-family:"Times New Roman", Times, serif;
+}
+</style>
+
+<script>
+
+    document.getElementById('timer').innerHTML =000 + ":" + 30;
+    startTimer();
+function startTimer()
+{
+  var presentTime = document.getElementById('timer').innerHTML;
+  var timeArray = presentTime.split(/[:]+/);
+  var m = timeArray[0];
+  var s = checkSecond((timeArray[1] - 1));
+  if(s==59){m=m-1}
+  //if(m<0){alert('timer completed')}
+
+  document.getElementById('timer').innerHTML = m + ":" + s;
+  console.log(m)
+  setTimeout(startTimer, 1000);
+}
+
+function checkSecond(sec) {
+      if (sec < 10 && sec >= 0)
+      {
+        sec = "0" + sec    // add zero in front of numbers < 10
+      };
+      if (sec < 0) {sec = "59"};
+      return sec;
+}
+</script>
+
+
+
+
+
+{% endblock %}

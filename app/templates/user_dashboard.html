@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    User Dashboard
+{% endblock %}
+
+
+{% block name %} {{ user.name }}{% endblock %}
+
+{% block img %}
+
+{% if user.picture %}
+<img src="{{ user.picture }}" height="50px" width="50px">
+{% else %}
+<img src="{% static 'Assets/user.png' %}" height="50px" width="50px">
+{% endif %}
+
+{% endblock %}
+
+
+{% block body %}
+
+
+<div class="container-fluid p-3">
+
+<div class="form-group bg-white border p-3">
+
+        {% if msg %}
+             <h4 class="text-danger myfont">{{ msg }}</h4>
+        {% else %}
+            <h2 class="myfont text-success"><strong>Select Category to start quiz: </strong></h2>
+
+            <form action="{% url 'start_quiz' %}" method="post" class="myfont">
+                {% csrf_token %}
+                <input  name="post_id" value="0" hidden required>
+                    <ol>
+                    {% for quiz_cat in Categories %}
+                    <li class="py-1 col" >
+
+                        <input  type="radio"  name="category_id" value="{{ quiz_cat.id}}" required>
+                        <span class="h5"> {{ quiz_cat.name }}</span>
+                        <br>
+                    </li>
+                    {% endfor %}
+
+                    </ol>
+
+                <br>
+                <div class="col text-center">
+                <input type="submit" class="btn btn-success btn-md float-center" value="Select Language">
+                </div>
+            </form>
+        {% endif %}
+</div>
+</div>
+
+<style>
+.myfont{
+ font-family:"Times New Roman", Times, serif;
+}
+</style>
+{% endblock %}

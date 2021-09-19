@@ -1,0 +1,5 @@
+body {
+    background-color: rgb(231, 111, 111);
+    background: url({% static 'images/bg.jpg' %}) 50% 0 ; 
+    width:100% ;no-repeat fixed;"
+}  

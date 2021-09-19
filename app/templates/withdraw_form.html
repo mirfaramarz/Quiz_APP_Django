@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    User Dashboard
+{% endblock %}
+
+
+{% block name %} {{ user.name }}{% endblock %}
+
+{% block img %}
+
+{% if user.picture %}
+<img src="{{ user.picture }}" height="50px" width="50px">
+{% else %}
+<img src="{% static 'Assets/user.png' %}" height="50px" width="50px">
+{% endif %}
+
+{% endblock %}
+
+
+{% block body %}
+
+
+<div class="container-fluid text-center">
+	<form class="form-group p-5 validate-form" action="" method="post">
+					{% csrf_token %}
+
+					<div class="wrap-input100 validate-input m-b-23" data-validate = "Email is reauired">
+						<h5 class="text-left">Paypal Email</h5>
+						<input class="form-control" type="text" name="paypal_email"
+                               placeholder="Type your Paypal Email" required>
+
+					</div>
+					<br>
+						<p class="text-danger">* Please make sure you are connecting right paypal account</p>
+					<br>
+							<button class="btn btn-outline-success text-center">
+								Save
+							</button>
+
+
+				</form>
+</div>
+
+
+{% endblock %}

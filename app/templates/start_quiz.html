@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    User Dashboard
+{% endblock %}
+
+
+{% block name %} {{ user.name }}{% endblock %}
+
+{% block img %}
+
+{% if user.picture %}
+<img src="{{ user.picture }}" height="50px" width="50px">
+{% else %}
+<img src="{% static 'Assets/user.png' %}" height="50px" width="50px">
+{% endif %}
+
+{% endblock %}
+
+
+{% block body %}
+
+
+<div class="container-fluid p-3">
+
+<div class="form-group bg-white border p-3">
+
+        {% if msg %}
+             <h4 class="text-danger myfont">{{ msg }}</h4>
+        {% else %}
+
+                <h3 class="myfont text-success"><strong>Select Language to start quiz: </strong></h3>
+            <form action="{% url 'start_quiz' %}" method="post" class="myfont">
+                {% csrf_token %}
+                 <input  name="post_id" value="1" hidden required>
+                    <ol>
+
+                    {% for l_l in language_level %}
+                    <li class="py-1 col" >
+                        <input  type="radio"  name="quiz_id" value="{{ l_l.id }}" required>
+                        <span class="h5">Level: {{ l_l.level }},</span>
+                        <span class="h5">{{ l_l.language }}</span>
+                        <br>
+                    </li>
+                    {% endfor %}
+
+                    </ol>
+                <br>
+                <div class="col text-center">
+                <input type="submit" class="btn btn-success btn-md float-center" value="start quiz">
+                </div>
+            </form>
+        {% endif %}
+</div>
+</div>
+
+<style>
+.myfont{
+ font-family:"Times New Roman", Times, serif;
+}
+</style>
+{% endblock %}
